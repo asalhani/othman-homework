@@ -22,7 +22,10 @@ namespace Models.Impl
             var folderName = Path.Combine("Resources", "Images");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-            if (fileForm.Length > 0)
+            if (fileInfo.FileSize <= 0)
+                throw new ArgumentOutOfRangeException("File size should be greater than 0");
+            
+            if (fileInfo.FileSize >=  0)
             {
                 double sizeMB = Convert.ToDouble(fileForm.Length) / 1024 / 1024;
                 if (sizeMB > 5)
