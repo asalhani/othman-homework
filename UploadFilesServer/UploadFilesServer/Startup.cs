@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Models.Impl;
+using Models.Interfaces;
 using UploadFilesServer.Context;
 
 namespace UploadFilesServer
@@ -48,12 +50,21 @@ namespace UploadFilesServer
 
             services.AddControllers();
 
+            services.AddScoped<IFileManager, FileManager>();
+            services.AddScoped<ICacheService, CacheService>();
+
             services.AddMvc();
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
+            });
+            
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = 
+                    $"127.0.0.1:6379";
             });
         }
 
@@ -65,7 +76,7 @@ namespace UploadFilesServer
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
 
             app.UseStaticFiles();

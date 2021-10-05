@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Models;
 using Models.Impl;
+using Models.Interfaces;
 using UploadFilesServer.Models;
 
 namespace UploadFilesServer.Controllers
@@ -16,6 +17,13 @@ namespace UploadFilesServer.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
+        private readonly IFileManager _fileManager;
+
+        public FileController(IFileManager fileManager)
+        {
+            _fileManager = fileManager;
+        }
+        
         [HttpPost, DisableRequestSizeLimit]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
         [Route("upload")]
@@ -35,16 +43,22 @@ namespace UploadFilesServer.Controllers
                     FileExtention= Path.GetExtension(file.FileName)
                 };
                
-
-                FileManager fileManager = new FileManager();
-                fileManager.UploadFile(fileInfo, file);
-
-                return Ok("File uploaded...");
+                _fileManager.UploadFile(fileInfo, file);
+                 
+                return Ok(new SuccessResponse(){Message = "File uploaded"});
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex}");
+             //  return BadRequest(new ErrorResponse() {ErrorMessage = "File upload error..."});
+             return BadRequest(ex.ToString());
             }
+        }
+
+        [HttpGet, DisableRequestSizeLimit]
+        [Route("GetFiles")]
+        public async Task<IActionResult> GetFiles()
+        {
+            return Ok(_fileManager.GetFiles());
         }
 
         [HttpGet, DisableRequestSizeLimit]

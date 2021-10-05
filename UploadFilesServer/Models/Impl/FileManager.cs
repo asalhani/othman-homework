@@ -9,8 +9,14 @@ using System.Threading.Tasks;
 
 namespace Models.Impl
 {
-    public class FileManager /*: IFileManager*/
+    public class FileManager : IFileManager
     {
+        private readonly ICacheService _cacheService;
+        private const string _cache_key = "uploaded_files";
+        public FileManager(ICacheService cacheService)
+        {
+            _cacheService = cacheService;
+        }
         public bool UploadFile(MyFileInfo fileInfo, IFormFile fileForm)
         {
             var folderName = Path.Combine("Resources", "Images");
@@ -32,6 +38,9 @@ namespace Models.Impl
                 {
                     fileForm.CopyTo(stream);
                 }
+                
+                // update redis cache
+                UpdateRedisCache(fileInfo);
 
                 //return Ok(new { dbPath });
                 return true;
@@ -41,6 +50,22 @@ namespace Models.Impl
                 return false;
                 //return BadRequest();
             }
+        }
+
+        public List<MyFileInfo> GetFiles()
+        {
+            return _cacheService.Get<List<MyFileInfo>>(_cache_key);
+        }
+
+        private void UpdateRedisCache(MyFileInfo fileInfo)
+        {
+            var items = _cacheService.Get<List<MyFileInfo>>(_cache_key);
+            if (items == null)
+                items = new List<MyFileInfo>();
+            
+            items.Add(fileInfo);
+
+            _cacheService.Set(_cache_key, items);
         }
     }
 }

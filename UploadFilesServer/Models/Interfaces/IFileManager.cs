@@ -8,6 +8,7 @@ namespace Models.Interfaces
 {
     public interface IFileManager
     {
-        bool UploadFile(IFormFile file);
+        public bool UploadFile(MyFileInfo fileInfo, IFormFile fileForm);
+        public List<MyFileInfo> GetFiles();
     }
 }
