@@ -42,6 +42,7 @@ export class UploadComponent implements OnInit {
     });
   };
 
+
   // public uploadFile = (files) => {
   //   if (files.length === 0) {
   //     return;
