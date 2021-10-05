@@ -1,0 +1,41 @@
+<article class="container container-fluid">
+  <section class="create" *ngIf="isCreate">
+    <form>
+      <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+    </form>
+    <div class="photos" *ngIf="photos.length > 0">
+      <h2>Available photos</h2>
+      <div *ngFor="let photo of photos" class="photo">
+        <img [src]="createImgPath(photo)" style="width:60px; height:60px;">
+        <app-download [fileUrl]="photo"></app-download>
+      </div>
+    </div>
+  </section>
+
+  <section class="users" *ngIf="!isCreate">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <img [src]="createImgPath(user.imgPath)" alt="profile picture" style="width:60px; height:60px;">
+          </td>
+          <td>{{user.name}}</td>
+          <td>{{user.address}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="offset-md-10 col-md-2">
+        <button type="button" class="btn btn-primary" (click)="returnToCreate()">New User</button>
+      </div>
+    </div>
+  </section>
+</article>
+
