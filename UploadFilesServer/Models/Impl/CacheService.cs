@@ -32,8 +32,8 @@ namespace Models.Impl
         {
             var options = new DistributedCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1),
-                SlidingExpiration = TimeSpan.FromMinutes(10)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(8),
+                SlidingExpiration = TimeSpan.FromMinutes(1000)
             };
 
            var  serializedCustomerList = JsonConvert.SerializeObject(value);  

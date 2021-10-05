@@ -3,11 +3,19 @@
     <form>
       <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
     </form>
-    <div class="photos" *ngIf="photos.length > 0">
+    <!-- <div class="photos" *ngIf="photos.length > 0">
       <h2>Available photos</h2>
       <div *ngFor="let photo of photos" class="photo">
         <img [src]="createImgPath(photo)" style="width:60px; height:60px;">
         <app-download [fileUrl]="photo"></app-download>
+      </div>
+    </div> -->
+    <div class="photos" *ngIf="filesList?.length > 0">
+      <h2>Available Files</h2>
+      <div *ngFor="let file of filesList" class="photo">
+        <label>{{file.fileName}}</label><br/>
+        <label>{{file.fileSize}}</label><br/>
+        <label>{{file.uploadDate | date}}</label>
       </div>
     </div>
   </section>

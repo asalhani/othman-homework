@@ -22,14 +22,16 @@ export class AppComponent implements OnInit {
 
   public photos: string[] = [];
 
-  constructor(private http: HttpClient, private fileService: FileService) { }
+  constructor(private http: HttpClient, private fileService: FileService) 
+  {
+    this.filesList = [];
+   }
 
   ngOnInit() {
     this.isCreate = true;
     // this.getPhotos();
     this.fileService.getFilesList().subscribe(data =>{
-      this.filesList = data;
-      debugger
+      this.filesList = data as Array<FileInfo>;
       console.log(data)
     });
 
