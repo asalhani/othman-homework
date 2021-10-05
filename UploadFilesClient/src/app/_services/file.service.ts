@@ -27,4 +27,8 @@ export class FileService {
   public getPhotos() {
     return this.http.get(`${this.url}/getPhotos`);
   }
+
+  public getFilesList(){
+    return this.http.get(`${this.url}/GetFiles`);
+  }
 }

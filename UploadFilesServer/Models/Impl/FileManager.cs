@@ -54,7 +54,8 @@ namespace Models.Impl
 
         public List<MyFileInfo> GetFiles()
         {
-            return _cacheService.Get<List<MyFileInfo>>(_cache_key);
+            var files = _cacheService.Get<List<MyFileInfo>>(_cache_key);
+            return files;
         }
 
         private void UpdateRedisCache(MyFileInfo fileInfo)

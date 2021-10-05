@@ -1,8 +1,10 @@
 import { UserToCreate } from './_interfaces/userToCreate.model';
 import { User } from './_interfaces/user.model';
+import { FileInfo } from './_interfaces/file.info.model';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileService } from './_services/file.service';
+
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,7 @@ export class AppComponent implements OnInit {
   public user: UserToCreate;
   public users: User[] = [];
   public response: {dbPath: ''};
+  public filesList : FileInfo[] = [];
 
   public photos: string[] = [];
 
@@ -23,7 +26,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isCreate = true;
-    this.getPhotos();
+    // this.getPhotos();
+    this.fileService.getFilesList().subscribe(data =>{
+      this.filesList = data;
+      debugger
+      console.log(data)
+    });
+
   }
 
   private getPhotos = () => {
