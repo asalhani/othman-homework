@@ -25,7 +25,7 @@ namespace Models.Impl
             if (fileForm.Length > 0)
             {
                 double sizeMB = Convert.ToDouble(fileForm.Length) / 1024 / 1024;
-                if (sizeMB > 5)
+                if (sizeMB > 15)
                 {
                     //return BadRequest();
                     return false;

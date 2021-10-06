@@ -32,7 +32,7 @@ namespace UploadFilesServer.Controllers
             try
             {
                 //var file = Request.Form.Files[0];
-                var formCollection = await Request.ReadFormAsync();
+               var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
 
                 var fileInfo = new MyFileInfo()

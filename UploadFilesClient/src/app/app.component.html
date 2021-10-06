@@ -12,11 +12,14 @@
     </div> -->
     <div class="photos" *ngIf="filesList?.length > 0">
       <h2>Available Files</h2>
-      <div *ngFor="let file of filesList" class="photo">
-        <label>{{file.fileName}}</label><br/>
-        <label>{{file.fileSize}}</label><br/>
-        <label>{{file.uploadDate | date}}</label>
-      </div>
+      <div *ngFor="let category of filesList">
+        <h3>{{category.contentType}}</h3>
+        <div *ngFor="let file of category.files" class="photo">
+          <label>{{file.fileName}}</label><br/>
+          <label>{{file.fileSize}}</label><br/>
+          <label>{{file.uploadDate | date }}</label>
+        </div>
+      </div>  
     </div>
   </section>
 

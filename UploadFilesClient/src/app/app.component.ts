@@ -1,6 +1,8 @@
+//the backend unit test is not implemented yet DO NOT FORGET TO ADD IT
 import { UserToCreate } from './_interfaces/userToCreate.model';
 import { User } from './_interfaces/user.model';
 import { FileInfo } from './_interfaces/file.info.model';
+import { FileCategory } from './_interfaces/fileCategory.model';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileService } from './_services/file.service';
@@ -18,7 +20,7 @@ export class AppComponent implements OnInit {
   public user: UserToCreate;
   public users: User[] = [];
   public response: {dbPath: ''};
-  public filesList : FileInfo[] = [];
+  public filesList : FileCategory[] = [];
 
   public photos: string[] = [];
 
@@ -29,12 +31,36 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isCreate = true;
-    // this.getPhotos();
     this.fileService.getFilesList().subscribe(data =>{
-      this.filesList = data as Array<FileInfo>;
+      let files = data as Array<FileInfo>; //casting
+      if (files.length > 0)
+      {
+        const fileTypes = [...new Set(files.map(item => item.contentType))];
+        if(fileTypes && fileTypes.length > 0)
+        {
+          for (let i = 0; i < fileTypes.length; i++)
+          {
+            let categoryFiles = [];
+            for (let j = 0; j < files.length; j++)
+            {
+              if (fileTypes[i] == files[j].contentType)
+              {
+                categoryFiles.push(files[j]);
+              }
+            }
+            if (categoryFiles.length > 0)
+            {
+              let category = {} as FileCategory;
+              category.contentType = fileTypes[i];
+              category.files = categoryFiles;
+              this.filesList.push(category);
+            }
+          }
+        }
+      }
+      console.log(this.filesList)
       console.log(data)
     });
-
   }
 
   private getPhotos = () => {
